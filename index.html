@@ -8543,7 +8543,7 @@ function renderPool(){
   /* 图4：12项硬指标全样本披露率 */
   const chemSorted=[...S.chemPeer].map((p,i)=>{const idx=CHEM_KEYS.indexOf(p.key);return {n:CHEM_NAMES[idx],rate:p.rate,hit:p.hit};}).sort((a,b)=>a.rate-b.rate);
   ec("ecChem",{
-    grid:{left:8,right:44,top:14,bottom:6,containLabel:true},
+    grid:{left:8,right:52,top:14,bottom:6,containLabel:true},
     tooltip:{trigger:"axis",axisPointer:{type:"shadow"},formatter:p=>`${p[0].name}<br/>全样本披露率 ${p[0].value}%（${chemSorted.find(x=>x.n===p[0].name).hit}/24 家）`},
     xAxis:axisStyle({type:"value",max:100,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
     yAxis:{type:"category",data:chemSorted.map(x=>x.n),axisLine:{lineStyle:{color:PAL.line}},axisTick:{show:false},axisLabel:{color:"#5B6678",fontSize:10.5}},
@@ -8553,30 +8553,49 @@ function renderPool(){
   });
 
   /* 图5：G × RAROC 散点 */
+  const narSc=(document.getElementById("ecScatter")?.clientWidth||900)<520;
   const pts=cs.filter(c=>{const b=c.joint?.bank||{};return b.ead_yi>0&&b.raroc!=null;})
     .map(c=>{const b=c.joint.bank;return {value:[b.g_final??c.joint.g_final,b.raroc*100,b.ead_yi],name:c.name,g:c.joint.g_final};});
   ec("ecScatter",{
-    grid:{left:10,right:24,top:24,bottom:6,containLabel:true},
-    tooltip:{trigger:"item",formatter:p=>`${p.data.name}<br/>G=${p.data.value[0]} · RAROC ${p.data.value[1].toFixed(2)}%<br/>敞口 ${p.data.value[2]} 亿`},
-    xAxis:axisStyle({type:"value",name:"G-Score",min:0,max:65,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
-    yAxis:axisStyle({type:"value",name:"RAROC %",min:0,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
+    grid:{left:10,right:narSc?12:24,top:narSc?14:24,bottom:6,containLabel:true},
+    tooltip:{trigger:"item",confine:true,formatter:p=>`${p.data.name}<br/>G=${p.data.value[0]} · RAROC ${p.data.value[1].toFixed(2)}%<br/>敞口 ${p.data.value[2]} 亿`},
+    xAxis:axisStyle({type:"value",name:narSc?"":"G-Score",min:0,max:65,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
+    yAxis:axisStyle({type:"value",name:narSc?"":"RAROC %",min:0,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
     series:[{type:"scatter",
       data:pts.map(p=>({...p,itemStyle:{color:gColor(p.value[0]),opacity:.85,borderColor:"#fff",borderWidth:1}})),
-      symbolSize:v=>Math.max(10,v[2]*7+9),
-      label:{show:true,formatter:p=>p.data.g>=24?p.data.name:"",position:"top",fontSize:10,color:"#3A4456",fontWeight:600}}]
+      symbolSize:v=>Math.max(narSc?8:10,v[2]*(narSc?5:7)+(narSc?7:9)),
+      label:{show:true,formatter:p=>(p.data.g>=(narSc?30:24))?p.data.name:"",position:"top",fontSize:narSc?9.5:10,color:"#3A4456",fontWeight:600,
+        backgroundColor:"rgba(255,255,255,.85)",padding:[2,4],borderRadius:3,lineHeight:narSc?12:14},
+      labelLayout:{moveOverlap:"shiftY"},
+      emphasis:{focus:"self",label:{fontWeight:800}}}]
   });
 
-  /* 图6：五类信号触发户数 */
+  /* 图6：五类信号触发户数（窄屏改横向条形，避免长类名+tooltip堆叠） */
   const sigOrder=["数据缺失","数据不一致","行业脱群","选择性披露","模糊表述"];
-  ec("ecSignal",{
-    grid:{left:10,right:24,top:24,bottom:6,containLabel:true},
-    tooltip:{trigger:"axis",axisPointer:{type:"shadow"},formatter:p=>`${p[0].name}<br/>${p[0].value} 家触发（${(p[0].value/24*100).toFixed(1)}%）· 共 ${S.sigCount[p[0].name]||0} 条`},
-    xAxis:axisStyle({type:"category",data:sigOrder,axisLabel:{color:"#5B6678",fontSize:10.5,interval:0}}),
-    yAxis:axisStyle({type:"value",max:8,interval:2,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
-    series:[{type:"bar",barWidth:"48%",
-      data:sigOrder.map(t=>({value:S.sigCompany[t]||0,itemStyle:{color:(S.sigCompany[t]||0)>=4?PAL.bank:(S.sigCompany[t]||0)>=2?PAL.orange:PAL.blue,borderRadius:[5,5,0,0]}})),
-      label:{show:true,position:"top",fontWeight:700,color:"#3A4456",formatter:"{c} 户"}}]
-  });
+  const sigTip=p=>`${p[0].name}<br/>${p[0].value} 家触发（${(p[0].value/24*100).toFixed(1)}%）· 共 ${S.sigCount[p[0].name]||0} 条`;
+  const sigStyle=t=>{const v=S.sigCompany[t]||0;return {color:v>=4?PAL.bank:v>=2?PAL.orange:PAL.blue};};
+  if(narSc){
+    const rev=[...sigOrder].reverse();
+    ec("ecSignal",{
+      grid:{left:8,right:46,top:10,bottom:6,containLabel:true},
+      tooltip:{trigger:"axis",axisPointer:{type:"shadow"},confine:true,formatter:sigTip},
+      xAxis:axisStyle({type:"value",max:8,interval:2,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
+      yAxis:{type:"category",data:rev,axisLine:{lineStyle:{color:PAL.line}},axisTick:{show:false},axisLabel:{color:"#5B6678",fontSize:10.5}},
+      series:[{type:"bar",barWidth:"56%",
+        data:rev.map(t=>({value:S.sigCompany[t]||0,itemStyle:{...sigStyle(t),borderRadius:[0,4,4,0]}})),
+        label:{show:true,position:"right",fontSize:10.5,fontWeight:700,color:"#3A4456",formatter:"{c} 户"}}]
+    });
+  }else{
+    ec("ecSignal",{
+      grid:{left:10,right:24,top:24,bottom:6,containLabel:true},
+      tooltip:{trigger:"axis",axisPointer:{type:"shadow"},formatter:sigTip},
+      xAxis:axisStyle({type:"category",data:sigOrder,axisLabel:{color:"#5B6678",fontSize:10.5,interval:0}}),
+      yAxis:axisStyle({type:"value",max:8,interval:2,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
+      series:[{type:"bar",barWidth:"48%",
+        data:sigOrder.map(t=>({value:S.sigCompany[t]||0,itemStyle:{...sigStyle(t),borderRadius:[5,5,0,0]}})),
+        label:{show:true,position:"top",fontWeight:700,color:"#3A4456",formatter:"{c} 户"}}]
+    });
+  }
 
   /* 公司卡片（增强：决策/利率/RAROC） */
   const grid=document.getElementById("coGrid");

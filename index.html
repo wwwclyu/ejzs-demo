@@ -274,7 +274,10 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 .radio-row2 label:has(input:checked){background:var(--bank-light);border-color:var(--bank);color:var(--bank)}
 .sim-banner{border-radius:13px;padding:16px 20px;color:#fff;display:flex;align-items:center;gap:16px;margin-bottom:16px}
 .sim-banner .si{font-size:26px}
-.sim-banner h3{font-size:17px;margin-bottom:3px}
+.sim-banner h3{font-size:17px;margin-bottom:5px}
+.sim-banner .sb-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.sim-banner .sb-tag{display:inline-block;font-size:11.5px;line-height:1.4;padding:3px 9px;border-radius:5px;background:rgba(255,255,255,.18);white-space:nowrap}
+.sim-banner .sb-note{font-size:12.3px;opacity:.93;line-height:1.55;margin:0}
 .sim-banner p{font-size:12.3px;opacity:.93;line-height:1.55}
 /* 工行手机网银风格扁平SVG图标（单色随 currentColor） */
 .ic{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:1em;height:1em;vertical-align:-2px}
@@ -365,6 +368,8 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
   .sim-banner .si-badge svg{width:23px;height:23px}
   .sim-banner .srate{text-align:left!important}
   .sim-banner h3{font-size:15.5px}
+  .sim-banner .sb-tag{font-size:10.5px;padding:2px 7px}
+  .sim-banner .sb-note{font-size:11.5px}
   .stage-strip{gap:7px}
   .stage-cell{padding:9px 8px;font-size:11px}
   .fr{flex-wrap:wrap;gap:6px}
@@ -430,7 +435,7 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
   <button class="mnav-toggle" id="mnavToggle" aria-label="打开导航菜单" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
-  <div class="logo"><span class="mark">审</span>e鉴智审<small>化工企业漂绿识别与贷后监管平台</small></div>
+  <div class="logo"><span class="mark"><svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;display:block"><path d="M12 2 2 7v1.6h20V7L12 2Zm-7.6 8v6h2.4v-6H4.4Zm6.4 0v6h2.4v-6h-2.4Zm4.4 0v6h2.4v-6h-2.4ZM3 18.2h18v2.3H3v-2.3Z"/></svg></span>e鉴智审<small>化工企业漂绿识别与贷后监管平台</small></div>
   <nav>
     <button class="on" data-view="pool" onclick="switchView('pool')">客群筛查总览</button>
     <button data-view="verify" onclick="switchView('verify')">企业披露核验底稿</button>
@@ -450,7 +455,7 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 <!-- 手机端半屏导航抽屉（全局唯一，状态由 body.mnav-open 单一控制） -->
 <div class="mnav-mask" id="mnavMask"></div>
 <aside class="mnav-panel" id="mnavPanel" aria-label="导航菜单">
-  <div class="mnav-brand"><span class="mark">审</span>e鉴智审</div>
+  <div class="mnav-brand"><span class="mark"><svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;display:block"><path d="M12 2 2 7v1.6h20V7L12 2Zm-7.6 8v6h2.4v-6H4.4Zm6.4 0v6h2.4v-6h-2.4Zm4.4 0v6h2.4v-6h-2.4ZM3 18.2h18v2.3H3v-2.3Z"/></svg></span>e鉴智审</div>
   <div class="mnav-list">
     <button class="on" data-view="pool" onclick="goMobile('pool')">客群筛查总览</button>
     <button data-view="verify" onclick="goMobile('verify')">企业披露核验底稿</button>
@@ -8718,24 +8723,23 @@ function renderVerify(){
     <div class="mini-stat"><div class="n" style="color:var(--bank)">${nCon}</div><div class="l">被报告内反证 · ${pct(nCon)}%</div></div>
     <div class="mini-stat"><div class="n" style="color:var(--amber)">${nUnv}</div><div class="l">不可核验 · ${pct(nUnv)}%</div></div>
     <div class="mini-stat"><div class="n" style="color:var(--navy)">${locRate}%</div><div class="l">声明页码定位率（${nLocated}/${cls.length}）</div></div>`;
-  // 双轴瀑布：通用漂绿分 → 化工修正 → 最终 G
+  // 双轴评分合成：通用漂绿分 / 化工修正 / 最终 G（独立柱，不堆叠）
   const gGen=c.g_score||0, gAdj=ch.g_adjust||0, gFin=Number(j.g_final)||0;
+  const narG=(document.getElementById("ecGwater")?.clientWidth||900)<520;
   ec("ecGwater",{
-    grid:{left:10,right:20,top:28,bottom:6,containLabel:true},
+    grid:{left:10,right:20,top:30,bottom:6,containLabel:true},
     tooltip:{trigger:"axis",axisPointer:{type:"shadow"},
       formatter:p=>{const i=p[0].dataIndex;const map=["通用 ESG 模型漂绿基础分","化工 12 项硬指标缺口行业修正","最终 G-Score（驱动银保决策）"];return `${map[i]}<br/>${i===1?"+"+gAdj:(i===0?gGen:gFin)} 分`;}},
-    xAxis:axisStyle({type:"category",data:["通用 ESG 漂绿分","+ 化工行业修正","最终 G-Score"],axisLabel:{color:"#3A4456",fontWeight:600,fontSize:11.5}}),
+    xAxis:axisStyle({type:"category",data:narG?["通用漂绿分","+化工修正","最终G"]:["通用 ESG 漂绿分","+ 化工行业修正","最终 G-Score"],axisLabel:{color:"#3A4456",fontWeight:600,fontSize:narG?10:11.5,interval:0}}),
     yAxis:axisStyle({type:"value",max:65,interval:13,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
     series:[
-      {type:"bar",stack:"w",barWidth:"46%",itemStyle:{color:"rgba(0,0,0,0)"},silent:true,
-        data:[0,gGen,0],tooltip:{show:false}},
-      {type:"bar",stack:"w",barWidth:"46%",
+      {type:"bar",barWidth:"46%",
         data:[
           {value:gGen,itemStyle:{color:PAL.blue,borderRadius:[5,5,0,0]}},
           {value:gAdj,itemStyle:{color:PAL.bank,borderRadius:[5,5,0,0]}},
           {value:gFin,itemStyle:{color:gColor(gFin),borderRadius:[5,5,0,0]}}
         ],
-        label:{show:true,position:"top",fontWeight:800,fontSize:13,color:"#1A2233",
+        label:{show:true,position:"top",fontWeight:800,fontSize:narG?11:13,color:"#1A2233",
           formatter:p=>p.dataIndex===1?"+"+gAdj:p.value}}
     ]
   });
@@ -9013,10 +9017,16 @@ function runSim(){
     isRej?"linear-gradient(135deg,#8E0008,#C7000B)":isCut?"linear-gradient(135deg,#B77C1E,#E8A33D)":"linear-gradient(135deg,#0B6B52,#0F8A65)";
   document.getElementById("simBanner").innerHTML=`
     <div class="si-badge" style="display:inline-flex;align-items:center;justify-content:center;color:${color}">${icon}</div>
-    <div style="flex:1">
+    <div style="flex:1;min-width:0">
       <h3>${escapeHtml(c.name)} · ${p.decision}</h3>
-      <p>G=${g}（来自真实报告，沙盘不可改）· 申请 ${amount.toFixed(1)} 亿 / ${term} 年期 / 绿色资质 ${green} / 鉴证 ${ass==="none"?"无":ass==="limited"?"有限保证":"合理保证"} · LGD ${(p.lgd*100).toFixed(0)}%
-      ${isRej?"<br>G≥60 触发漂绿否决线，本轮 EAD=0，企业完成整改复评后重新受理。":isCut?"<br>30≤G&lt;60，批复额度压降至申请额 70%，列入重点贷后。":"<br>G&lt;30，授信全额通过，按 IFRS9 Stage 1 正常计提。"}</p>
+      <div class="sb-tags">
+        <span class="sb-tag">G=${g}（真实报告）</span>
+        <span class="sb-tag">${amount.toFixed(1)} 亿 / ${term} 年</span>
+        <span class="sb-tag">绿色资质 ${green}</span>
+        <span class="sb-tag">鉴证 ${ass==="none"?"无":ass==="limited"?"有限保证":"合理保证"}</span>
+        <span class="sb-tag">LGD ${(p.lgd*100).toFixed(0)}%</span>
+      </div>
+      <p class="sb-note">${isRej?"G≥60 触发漂绿否决线，本轮 EAD=0，企业完成整改复评后重新受理。":isCut?"30≤G&lt;60，批复额度压降至申请额 70%，列入重点贷后。":"G&lt;30，授信全额通过，按 IFRS9 Stage 1 正常计提。"}</p>
     </div>
     <div class="srate" style="text-align:right"><div style="font-size:30px;font-weight:800">${(p.rate*100).toFixed(2)}%</div><div style="font-size:11.5px;opacity:.9">执行年化利率</div></div>`;
 

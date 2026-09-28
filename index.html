@@ -306,6 +306,9 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 .ec-card h3{font-size:14.5px;margin-bottom:2px;display:flex;align-items:center;gap:8px}
 .ec-card h3::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--bank)}
 .ec-card .hint{font-size:11px;color:var(--mut);font-weight:400;margin:2px 0 4px 12px}
+/* 定价页：瀑布图卡与右侧IFRS9卡由grid等高，图表容器flex自动撑满贴底（纯CSS，与时序/内核无关） */
+#view-pricing .ec-grid>.ec-card{display:flex;flex-direction:column}
+#view-pricing .ec-grid>.ec-card #ecRatefall{flex:1 1 auto;min-height:300px}
 @media(max-width:1100px){.ec-grid{grid-template-columns:1fr}}
 /* KPI 定价卡 */
 .kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:4px 0 16px}
@@ -799,7 +802,7 @@ body.upload-open #uploadModal{opacity:1;visibility:visible}
     <div class="ec-card">
       <h3>执行利率定价瀑布</h3>
       <div class="hint">1年期 LPR 3.00% 起，叠加期限溢价、绿色优惠与漂绿风险加点</div>
-      <div id="ecRatefall" class="ec-box" style="height:330px"></div>
+      <div id="ecRatefall" class="ec-box"></div>
     </div>
     <div class="ec-card">
       <h3>IFRS9 三阶段映射 · 拨备与资本占用</h3>
@@ -9246,26 +9249,6 @@ function renderPricing(){
     <tr><td class="k">资本占用缺口（×10.5%）</td><td class="v">${(num(b.capital_gap_yi)*10000).toFixed(2)} 万元</td></tr>
     <tr><td class="k">RAROC 风险调整后资本回报</td><td class="v" style="color:${rarColor}">${rar==null?"不适用（拒贷）":(rar*100).toFixed(2)+"%"}</td></tr>
     <tr><td class="k">贷后监测建议</td><td class="v" style="font-weight:600;font-size:12px;line-height:1.6">${escapeHtml(b.monitoring||"")}</td></tr>`;
-
-  /* 瀑布图高度对齐右侧IFRS9卡片 */
-  requestAnimationFrame(()=>{
-    const rightCard=document.querySelector('#view-pricing .ec-grid .ec-card:nth-child(2)');
-    const rf=document.getElementById('ecRatefall');
-    if(rightCard&&rf){
-      const rh=rightCard.getBoundingClientRect().height;
-      const h3=rightCard.querySelector('h3');
-      const hint=rightCard.querySelector('.hint');
-      const ch=h3?h3.getBoundingClientRect().height:0;
-      const ch2=hint?hint.getBoundingClientRect().height:0;
-      const contentH=rh-20-14-6-ch-ch2;
-      const newH=Math.max(280,Math.round(contentH));
-      rf.style.height=newH+'px';
-      /* dispose + re-init 确保ECharts用新高度重绘 */
-      if(EC.ecRatefall){EC.ecRatefall.dispose();}
-      EC.ecRatefall=echarts.init(rf);
-      EC.ecRatefall.setOption(rfOpt);
-    }
-  });
 
   /* 环责险卡（横版产品行） */
   const loadTags=(env.env_load_detail||[]).map(t=>`<span>${escapeHtml(t)}</span>`).join("");

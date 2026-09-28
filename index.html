@@ -260,9 +260,10 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 .stage-cell.s1.active{background:#F0FAF6;border-color:var(--green)}.stage-cell.s1.active .sn{color:var(--green)}
 /* 沙盘 */
 .sim-layout{display:grid;grid-template-columns:330px 1fr;gap:18px;align-items:start}
-@media(max-width:1100px){.sim-layout{grid-template-columns:1fr}.sim-card.sticky{position:static}}
 .sim-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px}
 .sim-card.sticky{position:sticky;top:70px}
+/* ≤1100px 改单列，必须取消吸顶，否则滚动时表单卡片会压住结果区（手机端重叠乱码根因） */
+@media(max-width:1100px){.sim-layout{grid-template-columns:1fr}.sim-card.sticky{position:static}}
 .sim-field{margin-bottom:16px}
 .sim-field label{display:block;font-size:12.8px;font-weight:700;margin-bottom:7px}
 .sim-field label .sv{color:var(--bank);font-weight:800;float:right}

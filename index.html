@@ -9206,8 +9206,6 @@ function renderPricing(){
   const baseBP=300, termBP=num(b.term_premium_bp)||0, greenBP=num(b.green_discount_bp)||0, gwBP=num(b.greenwash_premium_bp)||0;
   const c1=baseBP+termBP, c2=c1-greenBP, fin=c2+gwBP;
   const cats=["1年期LPR","+期限溢价","−绿色优惠","+漂绿加点","执行利率"];
-  const place=[0,baseBP,c2,c2,0];
-  const vals=[baseBP,termBP,greenBP,gwBP,fin];
   const rfOpt={
     grid:{left:10,right:16,top:30,bottom:6,containLabel:true},
     tooltip:{trigger:"axis",axisPointer:{type:"shadow"},
@@ -9215,13 +9213,12 @@ function renderPricing(){
     xAxis:axisStyle({type:"category",data:cats,axisLabel:{color:"#3A4456",fontWeight:600,fontSize:11.5}}),
     yAxis:axisStyle({type:"value",min:0,max:420,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}},axisLabel:{formatter:"{value}BP"}}),
     series:[
-      {type:"bar",stack:"r",barWidth:"50%",silent:true,itemStyle:{color:"rgba(0,0,0,0)"},data:place,tooltip:{show:false}},
-      {type:"bar",stack:"r",barWidth:"50%",
+      {type:"bar",barWidth:"50%",
         data:[
           {value:baseBP,itemStyle:{color:PAL.navy,borderRadius:[5,5,0,0]}},
-          {value:termBP,itemStyle:{color:PAL.amber}},
-          {value:greenBP,itemStyle:{color:PAL.green}},
-          {value:gwBP,itemStyle:{color:PAL.bank}},
+          {value:c1,itemStyle:{color:PAL.amber,borderRadius:[5,5,0,0]}},
+          {value:c2,itemStyle:{color:PAL.green,borderRadius:[5,5,0,0]}},
+          {value:fin,itemStyle:{color:PAL.bank,borderRadius:[5,5,0,0]}},
           {value:fin,itemStyle:{color:PAL.ink,borderRadius:[5,5,0,0]}}
         ],
         label:{show:true,position:"top",fontWeight:800,fontSize:12.5,color:"#1A2233",
@@ -9374,7 +9371,6 @@ function simWaterfall(id,p){
   const baseBP=300, c1=baseBP+p.termBP, c2=c1-p.greenBP, fin=c2+p.gwBP;
   const narrow=(document.getElementById(id)?.clientWidth||900)<520;
   const cats=narrow?["LPR","期限","绿色","漂绿","执行"]:["LPR 3.00%","+期限溢价","−绿色优惠","+漂绿加点","执行利率"];
-  const place=[0,baseBP,c2,c2,0];
   ec(id,{
     grid:{left:10,right:16,top:30,bottom:6,containLabel:true},
     tooltip:{trigger:"axis",axisPointer:{type:"shadow"},
@@ -9382,13 +9378,12 @@ function simWaterfall(id,p){
     xAxis:axisStyle({type:"category",data:cats,axisLabel:{color:"#3A4456",fontWeight:600,fontSize:narrow?10:11,interval:0}}),
     yAxis:axisStyle({type:"value",min:0,max:420,axisLabel:{formatter:"{value}BP"},splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
     series:[
-      {type:"bar",stack:"r",barWidth:"50%",silent:true,itemStyle:{color:"rgba(0,0,0,0)"},data:place,tooltip:{show:false}},
-      {type:"bar",stack:"r",barWidth:"50%",
+      {type:"bar",barWidth:"50%",
         data:[
           {value:baseBP,itemStyle:{color:PAL.navy,borderRadius:[5,5,0,0]}},
-          {value:p.termBP,itemStyle:{color:PAL.amber}},
-          {value:p.greenBP,itemStyle:{color:PAL.green}},
-          {value:p.gwBP,itemStyle:{color:PAL.bank}},
+          {value:c1,itemStyle:{color:PAL.amber,borderRadius:[5,5,0,0]}},
+          {value:c2,itemStyle:{color:PAL.green,borderRadius:[5,5,0,0]}},
+          {value:fin,itemStyle:{color:PAL.bank,borderRadius:[5,5,0,0]}},
           {value:fin,itemStyle:{color:PAL.ink,borderRadius:[5,5,0,0]}}
         ],
         label:{show:true,position:"top",fontWeight:800,fontSize:narrow?10:11.5,color:"#1A2233",

@@ -179,7 +179,7 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 /* 通知单 */
 .notice{padding:18px 22px;border-radius:11px;background:linear-gradient(135deg,#FFFBF0,#FFF5F7);border:1.5px solid #F3DDB0}
 .notice h4{font-size:15.5px;color:var(--bank-dark);margin-bottom:14px;display:flex;align-items:center;gap:9px}
-.notice h4::before{content:"📋";font-size:18px}
+.notice h4::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--bank)}
 .notice .verdict-line{font-size:14px;line-height:1.8;margin-bottom:14px;color:var(--ink)}
 .notice .verdict-line b{color:var(--bank)}
 .notice .action-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
@@ -276,6 +276,13 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 .sim-banner .si{font-size:26px}
 .sim-banner h3{font-size:17px;margin-bottom:3px}
 .sim-banner p{font-size:12.3px;opacity:.93;line-height:1.55}
+/* 工行手机网银风格扁平SVG图标（单色随 currentColor） */
+.ic{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:1em;height:1em;vertical-align:-2px}
+.ic svg{width:100%;height:100%;display:block}
+.sim-banner .si-badge{width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.sim-banner .si-badge svg{width:27px;height:27px}
+.tri-prod h4 .ic,.prod-card h3 .ic{width:17px;height:17px;vertical-align:-3px}
+.kvtable td{overflow-wrap:anywhere}
 .formula-note2{background:#F7F9FC;border:1px solid var(--line);border-radius:11px;padding:13px 16px;font-size:12px;line-height:1.85;color:var(--sub);margin-top:16px}
 .formula-note2 b{color:var(--ink)}
 /* 整改清单 */
@@ -354,6 +361,9 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
   .sim-banner{flex-direction:column;align-items:flex-start;gap:8px;padding:14px 15px}
   .sim-banner>div{width:100%;min-width:0}
   .sim-banner .si{font-size:22px}
+  .sim-banner .si-badge{width:40px;height:40px}
+  .sim-banner .si-badge svg{width:23px;height:23px}
+  .sim-banner .srate{text-align:left!important}
   .sim-banner h3{font-size:15.5px}
   .stage-strip{gap:7px}
   .stage-cell{padding:9px 8px;font-size:11px}
@@ -8344,6 +8354,20 @@ function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t
 /* ================= ECharts 助手（本地内联，离线可用） ================= */
 const PAL={bank:'#C7000B',green:'#0F8A65',amber:'#E8A33D',orange:'#E76F51',blue:'#7BA7D9',navy:'#1B4FA0',indigo:'#5b6cff',ink:'#1A2233',mut:'#97A0B3',line:'#E4EAF3'};
 const GCOLOR={0:'#0F8A65',12:'#7BA7D9',24:'#E8A33D',37:'#E76F51',60:'#C7000B'};
+/* 工行手机网银风格扁平图标（单色填充，随 currentColor） */
+const IC={
+ ok:'<svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm5.7 7.7-6.4 6.4a1 1 0 0 1-1.4 0l-3-3 1.4-1.4 2.3 2.3 5.7-5.7 1.4 1.4Z"/></svg>',
+ warn:'<svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.2 22.4 20.2a1 1 0 0 1-.9 1.5H2.5a1 1 0 0 1-.9-1.5L12 2.2ZM11 9v6.2h2V9h-2Zm0 7.6v2h2v-2h-2Z"/></svg>',
+ no:'<svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" transform="rotate(-45 12 12)" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20ZM5.1 11h13.8v2H5.1z"/></svg>',
+ bank:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 2 7v1.6h20V7L12 2Zm-7.6 8v6h2.4v-6H4.4Zm6.4 0v6h2.4v-6h-2.4Zm4.4 0v6h2.4v-6h-2.4ZM3 18.2h18v2.3H3v-2.3Z"/></svg>',
+ shield:'<svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.8 4 4.8v5.4c0 5 3.4 9.6 8 10.8 4.6-1.2 8-5.8 8-10.8V4.8L12 1.8ZM10.8 15.4l-3.4-3.4 1.4-1.4 2 2 4.4-4.4 1.4 1.4-5.8 5.8Z"/></svg>',
+ doc:'<svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6 2h8.8L20 7.2V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5L14 3.5ZM8 11.5h8v1.8H8v-1.8Zm0 3.5h8v1.8H8V15Z"/></svg>',
+ chart:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 21h18v-1.8H3V21Zm1.2-9h2.6v7.4H4.2V12Zm6-8h2.6v15.4h-2.6V4Zm6 8h2.6v7.4h-2.6V12Z"/></svg>',
+ trend:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.5 9.5 11l3.5 3.5L20.4 7H16V5h6.5v6.5h-2V9.4l-7.5 7.5-3.5-3.5L4.6 19.1 3 17.5Z"/></svg>',
+ bulb:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a6.5 6.5 0 0 0-4 11.6c.8.7 1.3 1.4 1.5 2.4h5c.2-1 .7-1.7 1.5-2.4A6.5 6.5 0 0 0 12 2ZM9.5 17.5h5v.5a2.5 2.5 0 0 1-5 0v-.5Z"/></svg>',
+ page:'<svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6 2h8.8L20 7.2V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5L14 3.5Z"/></svg>'
+};
+function ic(name,w){const s=w?` style="width:${w}px;height:${w}px"`:"";return `<span class="ic"${s}>${IC[name]||""}</span>`;}
 const EC={};
 function ec(id,opt){
   const el=document.getElementById(id); if(!el||typeof echarts==="undefined")return;
@@ -8630,7 +8654,7 @@ function renderVerify(){
     const sTxt=STRENGTH_TXT[s]||"未提及";
     const ev=quantEv[k];
     const dt=detail[nm]||"";
-    const evHtml=ev?`<div class="ev">📊 ${escapeHtml(ev)}</div>`:"";
+    const evHtml=ev?`<div class="ev">${ic('chart')} ${escapeHtml(ev)}</div>`:"";
     const dtHtml=dt?`<div class="ev">${escapeHtml(dt)}</div>`:"";
     const peerRate=STATS.chemPeer[i].rate;
     let peerHtml;
@@ -8666,7 +8690,7 @@ function renderVerify(){
   const vdTxt={supported:"可支撑",contradicted:"被反证",unverifiable:"不可核验"};
   const vdCls={supported:"sup",contradicted:"con",unverifiable:"unv"};
   document.getElementById("claimBox").innerHTML=cls.length?cls.map(x=>{
-    const pg=x.page?`<span class="pg">📖 第 <b>${x.page}</b> 页${x.page_confidence<0.9?` <span style="color:var(--mut)">(置信 ${(x.page_confidence*100).toFixed(0)}%)</span>`:""}</span>`:"";
+    const pg=x.page?`<span class="pg">${ic('page')} 第 <b>${x.page}</b> 页${x.page_confidence<0.9?` <span style="color:var(--mut)">(置信 ${(x.page_confidence*100).toFixed(0)}%)</span>`:""}</span>`:"";
     const ev=x.evidence?`<div class="ev">"${escapeHtml(x.evidence)}"</div>`:"";
     const dt=x.detail?`<div class="dt">${escapeHtml(x.detail)}</div>`:"";
     const gap=x.indicator_gap?`<div class="ind">指标缺口：${escapeHtml(x.indicator_gap)}</div>`:"";
@@ -8782,17 +8806,17 @@ function renderPricing(){
   /* 三色横幅 */
   document.getElementById("triBanner").innerHTML=`
     <div class="tri-prod bank">
-      <h4>🏦 银行 · 授信决策</h4>
+      <h4>${ic('bank')} 银行 · 授信决策</h4>
       <div class="dec">${escapeHtml(dec)}</div>
       <div class="ext">批复额度 ${isRej?"0":fmt(num(b.approved_yi),1)} 亿 · ${escapeHtml(b.ifrs9_stage||"")} · ${escapeHtml(b.monitoring||"")}</div>
     </div>
     <div class="tri-prod env">
-      <h4>🛡 环境污染责任险</h4>
+      <h4>${ic('shield')} 环境污染责任险</h4>
       <div class="dec">${escapeHtml(envDec)}</div>
       <div class="ext">年保费 ${fmt(num(env.premium_wan),2)} 万 · 费率 ${escapeHtml(env.rate_pct||"—")} · 免赔额 ${fmt(num(env.deductible_wan),0)} 万</div>
     </div>
     <div class="tri-prod guar">
-      <h4>📑 绿色信贷保证保险</h4>
+      <h4>${ic('doc')} 绿色信贷保证保险</h4>
       <div class="dec">${escapeHtml(guDec)}</div>
       <div class="ext">承保成数 ${(num(gu.insured_ratio)*100).toFixed(0)}% · 保额 ${fmt(num(gu.insured_amount_wan),0)} 万 · 3年保费 ${fmt(num(gu.premium_wan),0)} 万</div>
     </div>`;
@@ -8858,7 +8882,7 @@ function renderPricing(){
   /* 环责险卡 */
   const loadTags=(env.env_load_detail||[]).map(t=>`<span>${escapeHtml(t)}</span>`).join("");
   document.getElementById("envCard").innerHTML=`
-    <h3>🛡 环境污染责任保险 <span class="pbadge" style="background:${envColor}">${escapeHtml(envDec)}</span></h3>
+    <h3>${ic('shield')} 环境污染责任保险 <span class="pbadge" style="background:${envColor}">${escapeHtml(envDec)}</span></h3>
     <table class="kvtable">
       <tr><td class="k">累计责任限额</td><td class="v">2,000 万元</td></tr>
       <tr><td class="k">子板块基准费率（${escapeHtml(c.sub_sector||"化工")}）</td><td class="v">${(num(env.base_rate)*100).toFixed(1)}‰</td></tr>
@@ -8869,11 +8893,11 @@ function renderPricing(){
       <tr><td class="k">费率水平 / 每次事故免赔额</td><td class="v">${escapeHtml(env.rate_pct||"—")} · ${fmt(num(env.deductible_wan),0)} 万</td></tr>
     </table>
     <div class="load-tags">${loadTags||"<span>查勘明细待补</span>"}</div>
-    <div class="next-hint">📈 ${escapeHtml(env.next_year_hint||"")}</div>`;
+    <div class="next-hint">${ic('trend')} ${escapeHtml(env.next_year_hint||"")}</div>`;
 
   /* 保证险卡 */
   document.getElementById("guarCard").innerHTML=`
-    <h3>📑 绿色信贷保证保险（融资增信） <span class="pbadge" style="background:${guColor}">${escapeHtml(guDec)}</span></h3>
+    <h3>${ic('doc')} 绿色信贷保证保险（融资增信） <span class="pbadge" style="background:${guColor}">${escapeHtml(guDec)}</span></h3>
     <table class="kvtable">
       <tr><td class="k">贷款本息（本金 ×(1+利率×3年)）</td><td class="v">${fmt(num(gu.debt_total_wan),1)} 万</td></tr>
       <tr><td class="k">承保成数（正常80%/预警60%/高风险0）</td><td class="v">${(num(gu.insured_ratio)*100).toFixed(0)}%</td></tr>
@@ -8883,7 +8907,7 @@ function renderPricing(){
       <tr><td class="k">风险分担（银行自担 / 保险赔付）</td><td class="v">${(num(gu.bank_self_share)*100).toFixed(0)}% / ${(num(gu.insurer_share)*100).toFixed(0)}%</td></tr>
     </table>
     <div class="next-hint" style="background:#F2F6FC;border-color:#CFE0F5;color:#1B4FA0">
-      💡 ${guDec.indexOf("不予")>=0?"高风险客户不予承保，企业完成整改、复评 G&lt;30 后可恢复 80% 成数增信。":"保证险将 "+fmt(num(gu.insured_amount_wan),0)+" 万元信用风险转移至保险机构，释放银行资本与授信集中度。"}
+      ${ic('bulb')} ${guDec.indexOf("不予")>=0?"高风险客户不予承保，企业完成整改、复评 G&lt;30 后可恢复 80% 成数增信。":"保证险将 "+fmt(num(gu.insured_amount_wan),0)+" 万元信用风险转移至保险机构，释放银行资本与授信集中度。"}
     </div>`;
 
   /* 综合年成本 */
@@ -8945,13 +8969,14 @@ function initSim(){
 }
 function simWaterfall(id,p){
   const baseBP=300, c1=baseBP+p.termBP, c2=c1-p.greenBP, fin=c2+p.gwBP;
-  const cats=["LPR 3.00%","+期限溢价","−绿色优惠","+漂绿加点","执行利率"];
+  const narrow=(document.getElementById(id)?.clientWidth||900)<520;
+  const cats=narrow?["LPR","期限","绿色","漂绿","执行"]:["LPR 3.00%","+期限溢价","−绿色优惠","+漂绿加点","执行利率"];
   const place=[0,baseBP,c2,c2,0];
   ec(id,{
     grid:{left:10,right:16,top:30,bottom:6,containLabel:true},
     tooltip:{trigger:"axis",axisPointer:{type:"shadow"},
       formatter:i=>{const k=i[0].dataIndex;const notes=["1 年期 LPR 基准","期限 +"+p.termBP+"BP","绿色优惠 −"+p.greenBP+"BP（资质+鉴证）","漂绿 G×0.8BP = +"+p.gwBP.toFixed(1)+"BP","最终执行 "+(p.rate*100).toFixed(2)+"%"];return `${cats[k]}<br/>${notes[k]}`;}},
-    xAxis:axisStyle({type:"category",data:cats,axisLabel:{color:"#3A4456",fontWeight:600,fontSize:11}}),
+    xAxis:axisStyle({type:"category",data:cats,axisLabel:{color:"#3A4456",fontWeight:600,fontSize:narrow?10:11,interval:0}}),
     yAxis:axisStyle({type:"value",min:0,max:420,axisLabel:{formatter:"{value}BP"},splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
     series:[
       {type:"bar",stack:"r",barWidth:"50%",silent:true,itemStyle:{color:"rgba(0,0,0,0)"},data:place,tooltip:{show:false}},
@@ -8963,7 +8988,7 @@ function simWaterfall(id,p){
           {value:p.gwBP,itemStyle:{color:PAL.bank}},
           {value:fin,itemStyle:{color:PAL.ink,borderRadius:[5,5,0,0]}}
         ],
-        label:{show:true,position:"top",fontWeight:800,fontSize:11.5,color:"#1A2233",
+        label:{show:true,position:"top",fontWeight:800,fontSize:narrow?10:11.5,color:"#1A2233",
           formatter:x=>["300BP","+"+p.termBP+"BP","−"+p.greenBP+"BP","+"+p.gwBP.toFixed(1)+"BP",(p.rate*100).toFixed(2)+"%"][x.dataIndex]}}
     ]
   });
@@ -8982,18 +9007,18 @@ function runSim(){
   const p=priceLocal(g,amount,term,green,ass,highLgd);
   const isRej=p.decision==="拒绝", isCut=p.decision.indexOf("压降")>=0;
   const color=isRej?PAL.bank:isCut?PAL.amber:PAL.green;
-  const icon=isRej?"⛔":isCut?"⚠️":"✅";
+  const icon=isRej?ic('no',27):isCut?ic('warn',27):ic('ok',27);
   document.getElementById("simBanner").className="sim-banner";
   document.getElementById("simBanner").style.background=
     isRej?"linear-gradient(135deg,#8E0008,#C7000B)":isCut?"linear-gradient(135deg,#B77C1E,#E8A33D)":"linear-gradient(135deg,#0B6B52,#0F8A65)";
   document.getElementById("simBanner").innerHTML=`
-    <div class="si">${icon}</div>
+    <div class="si-badge" style="display:inline-flex;align-items:center;justify-content:center;color:${color}">${icon}</div>
     <div style="flex:1">
       <h3>${escapeHtml(c.name)} · ${p.decision}</h3>
       <p>G=${g}（来自真实报告，沙盘不可改）· 申请 ${amount.toFixed(1)} 亿 / ${term} 年期 / 绿色资质 ${green} / 鉴证 ${ass==="none"?"无":ass==="limited"?"有限保证":"合理保证"} · LGD ${(p.lgd*100).toFixed(0)}%
       ${isRej?"<br>G≥60 触发漂绿否决线，本轮 EAD=0，企业完成整改复评后重新受理。":isCut?"<br>30≤G&lt;60，批复额度压降至申请额 70%，列入重点贷后。":"<br>G&lt;30，授信全额通过，按 IFRS9 Stage 1 正常计提。"}</p>
     </div>
-    <div style="text-align:right"><div style="font-size:30px;font-weight:800">${(p.rate*100).toFixed(2)}%</div><div style="font-size:11.5px;opacity:.9">执行年化利率</div></div>`;
+    <div class="srate" style="text-align:right"><div style="font-size:30px;font-weight:800">${(p.rate*100).toFixed(2)}%</div><div style="font-size:11.5px;opacity:.9">执行年化利率</div></div>`;
 
   const rar=p.raroc;
   const rarColor=rar==null?PAL.mut:rar>=0.05?PAL.green:rar>=0.03?PAL.amber:PAL.bank;
@@ -9015,26 +9040,27 @@ function runSim(){
     rateLine.push(+(q.rate*100).toFixed(3));
     if(q.ead>0&&q.raroc!=null)rarLine.push(+(q.raroc*100).toFixed(3));else rarLine.push(null);
   });
+  const nar2=(document.getElementById("ecSimSens")?.clientWidth||900)<520;
   ec("ecSimSens",{
-    grid:{left:10,right:14,top:36,bottom:6,containLabel:true},
-    legend:{top:2,textStyle:{fontSize:11,color:"#5B6678"},data:["执行利率 %","RAROC %"]},
+    grid:{left:10,right:14,top:nar2?30:36,bottom:6,containLabel:true},
+    legend:{top:2,textStyle:{fontSize:nar2?10:11,color:"#5B6678"},data:["执行利率 %","RAROC %"]},
     tooltip:{trigger:"axis"},
-    xAxis:axisStyle({type:"value",name:"G-Score",min:0,max:70,splitLine:{show:false}}),
+    xAxis:axisStyle({type:"value",name:nar2?"":"G-Score",min:0,max:70,splitLine:{show:false}}),
     yAxis:[
-      axisStyle({type:"value",name:"利率%",position:"left",min:2.5,max:6,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
-      axisStyle({type:"value",name:"RAROC%",position:"right",min:-2,max:10,splitLine:{show:false}})
+      axisStyle({type:"value",name:nar2?"":"利率%",position:"left",min:2.5,max:6,splitLine:{show:true,lineStyle:{color:"#EEF2F8",type:"dashed"}}}),
+      axisStyle({type:"value",name:nar2?"":"RAROC%",position:"right",min:-2,max:10,splitLine:{show:false}})
     ],
     series:[
       {name:"执行利率 %",type:"line",smooth:true,symbol:"none",yAxisIndex:0,data:gs.map((x,i)=>[x,rateLine[i]]),
         lineStyle:{color:PAL.bank,width:2.5},itemStyle:{color:PAL.bank},
         areaStyle:{color:"rgba(199,0,11,.06)"},
-        markLine:{silent:true,symbol:"none",lineStyle:{color:PAL.mut,type:"dashed"},data:[{xAxis:30,label:{formatter:"压降线30",fontSize:10}},{xAxis:60,label:{formatter:"拒贷线60",fontSize:10}}]}},
+        markLine:{silent:true,symbol:"none",lineStyle:{color:PAL.mut,type:"dashed"},data:[{xAxis:30,label:{formatter:"压降线30",fontSize:nar2?9:10}},{xAxis:60,label:{formatter:"拒贷线60",fontSize:nar2?9:10}}]}},
       {name:"RAROC %",type:"line",smooth:true,symbol:"none",connectNulls:false,yAxisIndex:1,data:gs.map((x,i)=>[x,rarLine[i]]),
         lineStyle:{color:PAL.green,width:2.5},itemStyle:{color:PAL.green},
-        markLine:{silent:true,symbol:"none",lineStyle:{color:PAL.green,type:"dashed"},data:[{yAxis:0,label:{formatter:"盈亏平衡",fontSize:10}}],yAxisIndex:1},
+        markLine:{silent:true,symbol:"none",lineStyle:{color:PAL.green,type:"dashed"},data:[{yAxis:0,label:{formatter:"盈亏平衡",fontSize:nar2?9:10,position:"insideEndTop"}}],yAxisIndex:1},
         markPoint:{symbol:"circle",symbolSize:11,
           data:rar!=null?[{coord:[g,+(rar*100).toFixed(2)],itemStyle:{color:PAL.bank,borderColor:"#fff",borderWidth:2},
-            label:{show:true,formatter:`${c.name.replace(/（.*?）|\(.*?\)/g,"")} G${g}`,position:"top",fontSize:10.5,color:PAL.bank,fontWeight:700}}]:[]}}
+            label:{show:true,formatter:`${c.name.replace(/（.*?）|\(.*?\)/g,"")} G${g}`,position:"top",fontSize:nar2?9.5:10.5,color:PAL.bank,fontWeight:700}}]:[]}}
     ]
   });
 
@@ -9079,7 +9105,7 @@ function renderDD(){
   let evHtml="";
   if(supClaims.length){
     evHtml+=supClaims.map(x=>`<div class="ev-item">
-      <span class="src">声明可支撑</span>${escapeHtml(x.claim)}${x.page?`<span class="pg">📖 第 ${x.page} 页</span>`:""}
+      <span class="src">声明可支撑</span>${escapeHtml(x.claim)}${x.page?`<span class="pg">${ic('page')} 第 ${x.page} 页</span>`:""}
       ${x.evidence?`<div class="txt">"${escapeHtml(x.evidence)}"</div>`:""}
     </div>`).join("");
   }

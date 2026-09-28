@@ -24,10 +24,19 @@ nav::-webkit-scrollbar{display:none}
 nav button{border:0;background:none;padding:8px 13px;border-radius:9px;font-size:13.5px;color:var(--sub);cursor:pointer;font-weight:600;font-family:inherit;transition:.15s;white-space:nowrap}
 nav button:hover{background:#EEF2F8}
 nav button.on{background:var(--bank-light);color:var(--bank)}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:12.5px;color:var(--sub)}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--sub)}
+.hdr-user{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--bank);background:#FFF0F1;color:var(--bank);cursor:pointer;padding:0;transition:.15s}
+.hdr-user:hover{background:var(--bank);color:#fff}
+.hdr-user svg{width:18px;height:18px}
 .badge-dot{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;background:#F2F5FA;border:1px solid var(--line)}
 .dot{width:8px;height:8px;border-radius:50%;background:#B9C2D1}
 .dot.ok{background:var(--green);box-shadow:0 0 0 3px rgba(15,138,101,.15)}
+.upload-entry{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:20px;background:var(--bank-light);border:1px solid var(--bank);color:var(--bank);font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s;white-space:nowrap}
+.upload-entry:hover{background:var(--bank);color:#fff}
+.upload-entry svg{flex-shrink:0}
+.m-upload{display:none}
+.mnav-foot.upload-entry{display:flex;width:calc(100% - 28px);justify-content:center;margin:12px 14px 0;padding:11px;border-radius:10px;background:var(--bank-light);border:1px solid var(--bank);color:var(--bank);font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s}
+.mnav-foot.upload-entry:hover{background:var(--bank);color:#fff}
 /* ===== 布局 ===== */
 main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 .view{display:none}.view.on{display:block}
@@ -326,6 +335,43 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 .mnav-mask{display:none}
 .mnav-panel{display:none}
 .login-modal{display:none}
+/* 登录/上传弹窗（全局，不限屏幕尺寸） */
+.login-modal{display:flex;position:fixed;inset:0;z-index:300;background:rgba(20,28,45,.5);align-items:center;justify-content:center;padding:26px;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+body.login-open{overflow:hidden}
+body.login-open .login-modal{opacity:1;visibility:visible}
+body.upload-open{overflow:hidden}
+body.upload-open #uploadModal{opacity:1;visibility:visible}
+.login-card{background:#fff;border-radius:16px;width:100%;max-width:340px;padding:24px 22px 20px;position:relative;box-shadow:0 18px 60px rgba(0,0,0,.25)}
+.login-x{position:absolute;top:10px;right:13px;border:0;background:none;font-size:25px;line-height:1;color:var(--mut);cursor:pointer;font-family:inherit}
+.login-title{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:800;color:var(--ink);margin-bottom:18px}
+.login-title .mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--bank),#E23A52);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+.login-lab{display:block;font-size:12.5px;font-weight:700;color:var(--sub);margin:11px 0 6px}
+.login-inp{width:100%;padding:10px 12px;border:1.5px solid #E0E6ED;border-radius:9px;font-size:13.5px;font-family:inherit;background:#F8FAFC;color:var(--ink)}
+.login-ok{width:100%;margin-top:18px;border:0;border-radius:9px;padding:12px;font-size:14.5px;font-weight:700;color:#fff;font-family:inherit;cursor:pointer;background:linear-gradient(120deg,var(--bank),#E23A52);box-shadow:0 4px 12px rgba(199,0,11,.25)}
+.login-note{margin-top:12px;font-size:11px;color:var(--mut);line-height:1.6}
+/* 上传弹窗 */
+.upload-card{background:#fff;border-radius:16px;width:100%;max-width:460px;padding:24px 22px 20px;position:relative;box-shadow:0 18px 60px rgba(0,0,0,.25)}
+.upload-hint{margin:8px 0 14px;font-size:12px;color:var(--mut);line-height:1.55}
+.upload-drop{border:2px dashed var(--line);border-radius:12px;padding:26px 20px;text-align:center;cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;gap:8px}
+.upload-drop:hover{border-color:var(--bank);background:var(--bank-light)}
+.upload-drop.dragover{border-color:var(--bank);background:var(--bank-light)}
+.upload-drop p{font-size:13px;color:var(--sub)}
+.upload-drop .upload-fname{font-size:13px;font-weight:700;color:var(--bank);word-break:break-all;max-width:100%}
+.upload-fields{margin-top:16px}
+.upload-fields label{display:block;font-size:12px;color:var(--sub);font-weight:600;margin-bottom:4px}
+.upload-fields input,.upload-fields select{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13.5px;font-family:inherit;color:var(--ink);background:#fff}
+.upload-fields input:focus,.upload-fields select:focus{border-color:var(--bank);outline:none;box-shadow:0 0 0 3px var(--bank-light)}
+.uf-row{margin-bottom:12px}
+.uf-row2{display:flex;gap:14px;margin-bottom:12px}
+.uf-row2>div{flex:1;min-width:0}
+.upload-go{width:100%;margin-top:6px;padding:13px;border:0;border-radius:10px;background:var(--bank);color:#fff;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s}
+.upload-go:hover{background:var(--bank-dark)}
+.upload-go:disabled{opacity:.5;cursor:not-allowed}
+.upload-progress{margin-top:14px}
+.prog-bar{height:8px;border-radius:4px;background:#E8EDF4;overflow:hidden}
+.prog-fill{height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--bank));transition:width .35s ease}
+.prog-text{margin-top:8px;font-size:12.5px;color:var(--sub);text-align:center}
+@media(max-width:640px){.uf-row2{flex-direction:column;gap:0}}
 /* ===== 手机端适配（≤640px，桌面布局不受影响） ===== */
 @media(max-width:640px){
   body{font-size:13.5px}
@@ -404,6 +450,8 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
   body.mnav-open .mnav-toggle span:nth-child(2){opacity:0}
   body.mnav-open .mnav-toggle span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
   .m-login{display:inline-flex;align-items:center;flex-shrink:0;border:1px solid var(--bank);color:var(--bank);background:#fff;font-size:12.5px;font-weight:700;border-radius:16px;padding:6px 16px;font-family:inherit;cursor:pointer}
+  .m-upload{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--bank);color:var(--bank);background:#fff;border-radius:50%;cursor:pointer;font-family:inherit;padding:0;flex-shrink:0}
+  .m-upload svg{width:17px;height:17px}
   /* 遮罩 + 半屏抽屉（单一状态源 body.mnav-open） */
   .mnav-mask{display:block;position:fixed;inset:0;background:rgba(20,28,45,.45);z-index:400;opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s}
   .mnav-panel{position:fixed;top:0;left:0;bottom:0;width:min(282px,76vw);background:#fff;z-index:500;transform:translateX(-102%);transition:transform .24s ease;box-shadow:6px 0 30px rgba(20,30,50,.18);display:flex;flex-direction:column}
@@ -416,18 +464,6 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
   .mnav-list button{display:block;width:100%;text-align:left;border:0;background:none;font-family:inherit;font-size:14.5px;color:var(--ink);padding:13px 14px;border-radius:10px;font-weight:600;cursor:pointer;line-height:1.3}
   .mnav-list button.on{background:var(--bank-light);color:var(--bank)}
   .mnav-foot{padding:13px 18px;font-size:11px;color:var(--mut);border-top:1px solid var(--line);line-height:1.5;flex-shrink:0}
-  /* 登录弹层 */
-  .login-modal{display:flex;position:fixed;inset:0;z-index:300;background:rgba(20,28,45,.5);align-items:center;justify-content:center;padding:26px;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
-  body.login-open{overflow:hidden}
-  body.login-open .login-modal{opacity:1;visibility:visible}
-  .login-card{background:#fff;border-radius:16px;width:100%;max-width:340px;padding:24px 22px 20px;position:relative;box-shadow:0 18px 60px rgba(0,0,0,.25)}
-  .login-x{position:absolute;top:10px;right:13px;border:0;background:none;font-size:25px;line-height:1;color:var(--mut);cursor:pointer;font-family:inherit}
-  .login-title{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:800;color:var(--ink);margin-bottom:18px}
-  .login-title .mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--bank),#E23A52);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
-  .login-lab{display:block;font-size:12.5px;font-weight:700;color:var(--sub);margin:11px 0 6px}
-  .login-inp{width:100%;padding:10px 12px;border:1.5px solid #E0E6ED;border-radius:9px;font-size:13.5px;font-family:inherit;background:#F8FAFC;color:var(--ink)}
-  .login-ok{width:100%;margin-top:18px;border:0;border-radius:9px;padding:12px;font-size:14.5px;font-weight:700;color:#fff;font-family:inherit;cursor:pointer;background:linear-gradient(120deg,var(--bank),#E23A52);box-shadow:0 4px 12px rgba(199,0,11,.25)}
-  .login-note{margin-top:12px;font-size:11px;color:var(--mut);line-height:1.6}
 }
 </style>
 </head>
@@ -447,9 +483,17 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
     <button data-view="doc" onclick="switchView('doc')">口径与边界</button>
   </nav>
   <div class="hdr-right">
-    <span>信贷审查员（演示）</span>
-    <span class="badge-dot"><span class="dot ok"></span>24家化工样本 FY2025</span>
+    <button class="hdr-user" id="hdrUser" title="信贷审查员（演示）">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4 0-8 2-8 6v2h16v-2c0-4-4-6-8-6Z"/></svg>
+    </button>
+    <button class="badge-dot upload-entry" id="hdrUpload" onclick="openUpload()">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="M12 3 7 8h3v6h4V8h3L12 3ZM5 17v2h14v-2H5Z"/></svg>
+      上传企业数据
+    </button>
   </div>
+  <button class="m-login m-upload" id="mUploadBtn" aria-label="上传企业数据" onclick="openUpload()">
+    <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M12 3 7 8h3v6h4V8h3L12 3ZM5 17v2h14v-2H5Z"/></svg>
+  </button>
   <button class="m-login" id="mLoginBtn" aria-label="登录">登录</button>
 </header>
 
@@ -466,20 +510,57 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
     <button data-view="recheck" onclick="goMobile('recheck')">贷后年度复评</button>
     <button data-view="doc" onclick="goMobile('doc')">口径与边界</button>
   </div>
-  <div class="mnav-foot">24家化工样本 · FY2025 冻结基线</div>
+  <button class="mnav-foot upload-entry" onclick="closeMnav();openUpload()">
+    <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M12 3 7 8h3v6h4V8h3L12 3ZM5 17v2h14v-2H5Z"/></svg>
+    上传企业数据
+  </button>
 </aside>
 
 <!-- 登录弹层（演示口径） -->
 <div class="login-modal" id="loginModal">
   <div class="login-card">
     <button class="login-x" id="loginClose" aria-label="关闭">×</button>
-    <div class="login-title"><span class="mark">审</span>审查员登录</div>
+    <div class="login-title"><span class="mark"><svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;display:block"><path d="M12 2 2 7v1.6h20V7L12 2Zm-7.6 8v6h2.4v-6H4.4Zm6.4 0v6h2.4v-6h-2.4Zm4.4 0v6h2.4v-6h-2.4ZM3 18.2h18v2.3H3v-2.3Z"/></svg></span>审查员登录</div>
     <label class="login-lab">工号 / 账号</label>
     <input class="login-inp" type="text" value="信贷审查员（演示）" readonly>
     <label class="login-lab">密码</label>
     <input class="login-inp" type="password" placeholder="演示环境无需输入">
     <button class="login-ok" id="loginOk">进入演示工作台</button>
     <p class="login-note">演示环境已内置审查员视角与24家冻结样本，不连接行内系统；正式使用需通过工行统一身份认证接入 GCMS。</p>
+  </div>
+</div>
+
+<!-- 上传企业数据弹窗（模拟入口，不实际上传到服务器） -->
+<div class="login-modal" id="uploadModal">
+  <div class="upload-card">
+    <button class="login-x" id="uploadClose" aria-label="关闭">×</button>
+    <div class="login-title"><svg viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;display:block"><path d="M12 3 7 8h3v6h4V8h3L12 3ZM5 17v2h14v-2H5Z"/></svg>上传企业报告数据</div>
+    <p class="upload-hint">支持 PDF / Excel / Word，单文件 ≤ 200MB。数据仅在本地演示环境解析，不上传服务器。</p>
+    <div class="upload-drop" id="uploadDrop" onclick="document.getElementById('uploadFile').click()">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" style="width:44px;height:44px;color:var(--bank)"><path d="M24 6v26M14 16 24 6l10 10M8 34v6a2 2 0 0 0 2 2h28a2 2 0 0 0 2-2v-6"/></svg>
+      <p id="uploadDropText">点击选择文件或拖拽到此</p>
+      <p class="upload-fname" id="uploadFname"></p>
+      <input type="file" id="uploadFile" accept=".pdf,.xlsx,.xls,.doc,.docx" style="display:none">
+    </div>
+    <div class="upload-fields">
+      <div class="uf-row"><label>企业名称</label><input type="text" id="uploadName" placeholder="如：新凤鸣化工" oninput="syncUploadName()"></div>
+      <div class="uf-row2">
+        <div><label>申请额度（亿）</label><input type="number" id="uploadAmount" value="3.0" step="0.1" min="0.1"></div>
+        <div><label>期限（年）</label><input type="number" id="uploadTerm" value="3" min="1" max="10"></div>
+      </div>
+      <div class="uf-row2">
+        <div><label>绿色资质评分</label><input type="number" id="uploadGreen" value="70" min="0" max="100"></div>
+        <div><label>鉴证保证程度</label>
+          <select id="uploadAss"><option value="none">无</option><option value="limited">有限保证</option><option value="reasonable" selected>合理保证</option></select>
+        </div>
+      </div>
+    </div>
+    <button class="upload-go" id="uploadGo" onclick="startUploadSim()">开始智能鉴证</button>
+    <div class="upload-progress" id="uploadProgress" style="display:none">
+      <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+      <p class="prog-text" id="progText">准备中...</p>
+    </div>
+    <p class="login-note">演示模式：上传后将模拟 OCR 解析、ESG 指标抽取、漂绿信号检测全过程，最终加载预置样本数据进入沙盘。</p>
   </div>
 </div>
 
@@ -8468,6 +8549,7 @@ function goMobile(v){ switchView(v); closeMnav(); }
   const openLogin=()=>document.body.classList.add("login-open");
   const closeLogin=()=>document.body.classList.remove("login-open");
   document.getElementById("mLoginBtn").addEventListener("click",openLogin);
+  document.getElementById("hdrUser").addEventListener("click",openLogin);
   document.getElementById("loginClose").addEventListener("click",closeLogin);
   lm.addEventListener("click",e=>{ if(e.target===lm)closeLogin(); });
   document.getElementById("loginOk").addEventListener("click",()=>{
@@ -8475,8 +8557,121 @@ function goMobile(v){ switchView(v); closeMnav(); }
     if(window.showToast)showToast("演示环境已进入：信贷审查员视角 · 24家冻结样本");
     else{const t=document.createElement("div");t.className="toast show";t.textContent="演示环境已进入：信贷审查员视角";document.body.appendChild(t);setTimeout(()=>t.remove(),2200);}
   });
-  document.addEventListener("keydown",e=>{ if(e.key==="Escape"){closeMnav();closeLogin();} });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape"){closeMnav();closeLogin();closeUpload();} });
 })();
+
+/* ================= 上传企业数据弹窗（模拟入口） ================= */
+function openUpload(){
+  document.body.classList.add("upload-open");
+  document.getElementById("uploadProgress").style.display="none";
+  document.getElementById("uploadGo").disabled=false;
+  document.getElementById("uploadGo").style.display="block";
+  document.getElementById("progFill").style.width="0";
+}
+function closeUpload(){ document.body.classList.remove("upload-open"); }
+function syncUploadName(){
+  const inp=document.getElementById("uploadName");
+  const fn=document.getElementById("uploadFname");
+  if(inp.value && fn.dataset.auto==="1"){ fn.dataset.auto="0"; }
+}
+function _matchCompany(name){
+  if(!name)return null;
+  const n=name.replace(/\.pdf|\.xlsx?|\.docx?/gi,"").replace(/[（(].*?[）)]/g,"").trim();
+  if(!n)return null;
+  let best=null,bestScore=0;
+  DATA.forEach(c=>{
+    const cn=c.name.replace(/[（(].*?[）)]/g,"").trim();
+    let s=0;
+    if(cn===n)s=100;
+    else if(cn.includes(n)||n.includes(cn))s=80;
+    else{const common=[...n].filter(ch=>cn.includes(ch)).length;s=common/Math.max(n.length,cn.length)*60;}
+    if(s>bestScore){bestScore=s;best=c;}
+  });
+  return bestScore>=40?best:null;
+}
+(function(){
+  const um=document.getElementById("uploadModal");
+  document.getElementById("uploadClose").addEventListener("click",closeUpload);
+  um.addEventListener("click",e=>{ if(e.target===um)closeUpload(); });
+  const fileInp=document.getElementById("uploadFile");
+  const dropZone=document.getElementById("uploadDrop");
+  const fnameEl=document.getElementById("uploadFname");
+  const dropText=document.getElementById("uploadDropText");
+  const nameInp=document.getElementById("uploadName");
+  const MAX_SIZE=200*1024*1024;
+
+  function handleFile(f){
+    if(!f)return;
+    if(f.size>MAX_SIZE){
+      fnameEl.textContent="文件超过 200MB 限制（"+(f.size/1048576).toFixed(1)+"MB）";
+      fnameEl.style.color="var(--bank)";
+      return;
+    }
+    fnameEl.textContent=f.name;
+    fnameEl.style.color="var(--bank)";
+    fnameEl.dataset.auto="1";
+    dropText.textContent="已选择文件，可继续填写企业信息";
+    // 尝试从文件名提取企业名
+    const base=f.name.replace(/\.(pdf|xlsx?|docx?)$/i,"").replace(/[（(].*?[）)]/g,"").trim();
+    if(base.length>=2&&base.length<=30) nameInp.value=base;
+  }
+  fileInp.addEventListener("change",e=>handleFile(e.target.files[0]));
+  // 拖拽
+  ["dragenter","dragover"].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.add("dragover");}));
+  ["dragleave","drop"].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.remove("dragover");}));
+  dropZone.addEventListener("drop",e=>{const f=e.dataTransfer.files[0];if(f){fileInp.files=e.dataTransfer.files;handleFile(f);}});
+})();
+
+function startUploadSim(){
+  const goBtn=document.getElementById("uploadGo");
+  const prog=document.getElementById("uploadProgress");
+  const fill=document.getElementById("progFill");
+  const text=document.getElementById("progText");
+  goBtn.style.display="none";
+  prog.style.display="block";
+
+  const name=document.getElementById("uploadName").value.trim();
+  const matched=_matchCompany(name);
+  const target=matched||DATA[0];
+
+  const steps=[
+    {p:15,t:"文件解析中…"},
+    {p:32,t:"OCR 文本识别中…"},
+    {p:50,t:"ESG 指标抽取中…"},
+    {p:68,t:"漂绿信号检测中…"},
+    {p:84,t:"G-Score 计算中…"},
+    {p:96,t:"生成鉴证报告…"},
+    {p:100,t:"完成，正在加载沙盘…"}
+  ];
+  let si=0;
+  function tick(){
+    if(si>=steps.length){
+      current=target;
+      const sel=document.getElementById("simCompany");
+      if(sel){const idx=DATA.indexOf(target);if(idx>=0)sel.value=idx;}
+      // 同步沙盘表单参数
+      const amt=document.getElementById("uploadAmount").value;
+      const term=document.getElementById("uploadTerm").value;
+      const green=document.getElementById("uploadGreen").value;
+      const ass=document.getElementById("uploadAss").value;
+      if(document.getElementById("simAmount"))document.getElementById("simAmount").value=amt;
+      if(document.getElementById("simTerm"))document.getElementById("simTerm").value=term;
+      if(document.getElementById("simGreen"))document.getElementById("simGreen").value=green;
+      if(document.getElementById("simHighLgd"))document.getElementById("simHighLgd").value="";
+      document.querySelectorAll("input[name=simAss]").forEach(r=>{r.checked=r.value===ass;});
+      closeUpload();
+      if(!window.__simInited)initSim(); else runSim();
+      switchView("sim");
+      return;
+    }
+    const s=steps[si];
+    fill.style.width=s.p+"%";
+    text.textContent=s.t;
+    si++;
+    setTimeout(tick, 600+Math.random()*400);
+  }
+  setTimeout(tick, 300);
+}
 
 /* ================= 页面1：客群总览 ================= */
 function renderPool(){

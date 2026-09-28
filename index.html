@@ -8,8 +8,9 @@
 :root{
   --bank:#C7000B; --bank-dark:#8E0008; --bank-light:#FDEEF0;
   --ink:#1A2233; --sub:#5B6678; --mut:#97A0B3; --line:#E4EAF3;
-  --bg:#F4F6FA; --card:#FFFFFF; --shadow:0 4px 18px rgba(20,60,120,.06); --shadow-h:0 10px 34px rgba(20,60,120,.12);
+  --bg:#F4F6FA; --card:#FFFFFF; --shadow:0 4px 18px rgba(20,60,120,.06); --shadow-h:0 12px 36px rgba(20,60,120,.14);
   --green:#0F8A65; --amber:#E8A33D; --orange:#E76F51; --red:#C7000B;
+  --brand-grad:linear-gradient(135deg,#C7000B 0%,#E63E2E 55%,#F77645 100%);
   --radius:14px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -37,6 +38,94 @@ nav button.on{background:var(--bank-light);color:var(--bank)}
 .m-upload{display:none}
 .mnav-foot.upload-entry{display:flex;width:calc(100% - 28px);justify-content:center;margin:12px 14px 0;padding:11px;border-radius:10px;background:var(--bank-light);border:1px solid var(--bank);color:var(--bank);font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s}
 .mnav-foot.upload-entry:hover{background:var(--bank);color:#fff}
+/* 顶栏底部红橙渐变饰线 */
+header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--brand-grad);opacity:.9}
+/* 字号切换器 */
+.fs-switch{display:inline-flex;align-items:center;background:#F2F5FA;border:1px solid var(--line);border-radius:18px;padding:2px}
+.fs-switch button{border:0;background:none;font-family:inherit;font-weight:800;color:var(--mut);cursor:pointer;border-radius:15px;line-height:1;padding:4px 9px;transition:.15s}
+.fs-switch button:nth-child(1){font-size:11px}
+.fs-switch button:nth-child(2){font-size:13px}
+.fs-switch button:nth-child(3){font-size:15px}
+.fs-switch button.on{background:var(--bank);color:#fff}
+/* 主按钮渐变强化 */
+.upload-entry{background:var(--brand-grad);border-color:transparent;color:#fff;box-shadow:0 3px 10px rgba(230,62,46,.3)}
+.upload-entry:hover{background:var(--brand-grad);color:#fff;transform:translateY(-1px);box-shadow:0 6px 16px rgba(230,62,46,.38)}
+.mnav-foot.upload-entry{background:var(--brand-grad);border-color:transparent;color:#fff;box-shadow:0 3px 10px rgba(230,62,46,.3)}
+.mnav-foot.upload-entry:hover{background:var(--brand-grad);color:#fff;transform:translateY(-1px)}
+.hdr-user:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(199,0,11,.25)}
+/* ===== 首屏视觉横幅 ===== */
+.hero-strip{position:relative;overflow:hidden;border-radius:var(--radius);padding:22px 28px;margin-bottom:18px;background:var(--brand-grad);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 10px 30px rgba(199,0,11,.22)}
+.hero-strip::before{content:"";position:absolute;right:-60px;top:-90px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.10)}
+.hero-strip::after{content:"";position:absolute;right:120px;bottom:-120px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.07)}
+.hero-l{position:relative;z-index:1}
+.hero-l h2{font-size:22px;font-weight:800;letter-spacing:1px;margin-bottom:7px}
+.hero-l p{font-size:13px;opacity:.92;letter-spacing:.5px}
+.hero-badges{position:relative;z-index:1;display:flex;gap:10px;flex-shrink:0}
+.hero-badges span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:18px;padding:7px 15px;font-size:12.5px;font-weight:600;white-space:nowrap;backdrop-filter:blur(4px)}
+/* ===== 全局悬停动效 ===== */
+.card,.ec-card,.stat,.chart-card,.prod-card{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.card:hover,.ec-card:hover,.chart-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-h);border-color:#D5DFEE}
+.stat:hover{transform:translateY(-3px);box-shadow:var(--shadow-h)}
+.kvtable tr{transition:background .12s}
+.kvtable tr:hover td{background:#FCF3F4}
+.back-btn{transition:.15s}
+.back-btn:hover{transform:translateX(-3px);box-shadow:var(--shadow-h)}
+.sec-jump{transition:.15s}
+.sec-jump:hover{letter-spacing:.3px}
+/* ===== 银保产品横版行（一排一个，仿融资超市） ===== */
+.prod-grid{display:flex;flex-direction:column;gap:16px;margin-bottom:18px}
+.prod-card{padding:0;overflow:hidden;border:1px solid #EDF1F7}
+.prod-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-h);border-color:#F0C9BD}
+.prod-row{display:flex;align-items:stretch}
+.prod-ribbon{width:84px;flex-shrink:0;background:var(--brand-grad);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;position:relative}
+.prod-ribbon::after{content:"";position:absolute;right:-1px;top:0;bottom:0;width:14px;background:inherit;clip-path:polygon(0 0,100% 12%,100% 88%,0 100%)}
+.prod-ribbon svg{width:30px;height:30px}
+.prod-ribbon span{font-size:11px;font-weight:700;letter-spacing:1px;opacity:.95;writing-mode:initial}
+.prod-main{flex:1;min-width:0;padding:16px 20px}
+.prod-top{display:flex;align-items:center;gap:20px}
+.prod-name{font-size:15.5px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:10px;min-width:190px;flex-shrink:0}
+.prod-name .pbadge{font-size:11px;font-weight:700;padding:3px 11px;border-radius:12px;color:#fff}
+.prod-metrics{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.pm{text-align:center;border-right:1px dashed #E4EAF3;padding:0 6px}
+.pm:last-child{border-right:0}
+.pm b{display:block;font-size:17px;font-weight:800;color:var(--bank);line-height:1.25;white-space:nowrap}
+.pm span{display:block;font-size:11.5px;color:var(--mut);margin-top:3px;white-space:nowrap}
+.prod-detail-btn{flex-shrink:0;border:0;border-radius:19px;background:var(--brand-grad);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 20px;cursor:pointer;box-shadow:0 3px 9px rgba(230,62,46,.28);transition:.15s;white-space:nowrap}
+.prod-detail-btn:hover{transform:translateY(-1px);box-shadow:0 6px 15px rgba(230,62,46,.4)}
+.prod-detail{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.prod-card.open .prod-detail{max-height:560px}
+.prod-card.open .prod-detail-btn{background:#fff;color:var(--bank);border:1px solid var(--bank);box-shadow:none}
+.prod-inner{padding-top:14px;margin-top:14px;border-top:1px dashed #E4EAF3}
+@media(max-width:1100px){
+  .prod-top{flex-wrap:wrap}
+  .prod-metrics{order:3;flex:0 0 100%;grid-template-columns:repeat(4,1fr)}
+  .prod-detail-btn{margin-left:auto}
+}
+@media(max-width:640px){
+  .hero-strip{flex-direction:column;align-items:flex-start;gap:12px;padding:18px 18px}
+  .hero-l h2{font-size:18px}
+  .hero-badges{flex-wrap:wrap}
+  .prod-ribbon{width:62px}
+  .prod-ribbon svg{width:24px;height:24px}
+  .prod-ribbon span{font-size:10px}
+  .prod-main{padding:13px 14px}
+  .prod-top{gap:12px}
+  .prod-name{min-width:0;font-size:14.5px}
+  .prod-metrics{grid-template-columns:repeat(2,1fr);gap:8px 6px;margin-top:2px}
+  .prod-detail-btn{order:4;margin-left:auto;margin-top:6px}
+  .pm:nth-child(2){border-right:0}
+  .pm b{font-size:15px}
+}
+/* 中宽屏（含字号放大后）顶栏收紧，避免导航项被裁切 */
+@media(max-width:1360px){
+  header{padding:0 14px;gap:10px}
+  .logo small{display:none}
+  nav{margin-left:4px;gap:0}
+  nav button{padding:8px 10px;font-size:13px}
+  .hdr-right{gap:8px}
+  .upload-entry{padding:6px 10px;font-size:12px}
+  .fs-switch button{padding:4px 7px}
+}
 /* ===== 布局 ===== */
 main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 .view{display:none}.view.on{display:block}
@@ -246,8 +335,7 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 .fr .fnote{font-size:11px;color:var(--mut);width:200px;flex-shrink:0;text-align:right}
 @media(max-width:1100px){.fr{flex-wrap:wrap}.fr .fbar{order:3;flex-basis:100%}.fr .fnote{width:auto;text-align:left}}
 /* 保险产品卡 */
-.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
-.prod-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px}
+.prod-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
 .prod-card h3{font-size:14.5px;display:flex;align-items:center;gap:9px;margin-bottom:12px}
 .prod-card h3 .pbadge{font-size:11px;font-weight:700;padding:2px 10px;border-radius:11px;color:#fff;margin-left:auto}
 .kvtable{width:100%;font-size:12.8px;border-collapse:collapse}
@@ -258,7 +346,7 @@ main{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
 .load-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
 .load-tags span{font-size:11px;padding:2px 9px;border-radius:9px;background:#F2F5FA;color:var(--sub);font-weight:600}
 .next-hint{margin-top:11px;padding:9px 12px;border-radius:9px;background:#F2FAF6;border:1px solid #C7ECDD;font-size:12px;line-height:1.6;color:#0B6B52}
-@media(max-width:1100px){.prod-grid{grid-template-columns:1fr}}
+@media(max-width:1100px){.prod-grid{gap:12px}}
 /* IFRS9 阶段 */
 .stage-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 4px}
 .stage-cell{border:1.5px solid var(--line);border-radius:11px;padding:11px 13px;font-size:12px;line-height:1.5;color:var(--sub);background:#FBFDFF}
@@ -364,8 +452,8 @@ body.upload-open #uploadModal{opacity:1;visibility:visible}
 .uf-row{margin-bottom:12px}
 .uf-row2{display:flex;gap:14px;margin-bottom:12px}
 .uf-row2>div{flex:1;min-width:0}
-.upload-go{width:100%;margin-top:6px;padding:13px;border:0;border-radius:10px;background:var(--bank);color:#fff;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s}
-.upload-go:hover{background:var(--bank-dark)}
+.upload-go{width:100%;margin-top:6px;padding:13px;border:0;border-radius:10px;background:var(--brand-grad);color:#fff;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s;box-shadow:0 4px 12px rgba(230,62,46,.3)}
+.upload-go:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(230,62,46,.4)}
 .upload-go:disabled{opacity:.5;cursor:not-allowed}
 .upload-progress{margin-top:14px}
 .prog-bar{height:8px;border-radius:4px;background:#E8EDF4;overflow:hidden}
@@ -402,7 +490,6 @@ body.upload-open #uploadModal{opacity:1;visibility:visible}
   .tri-banner{gap:10px;margin-bottom:12px}
   .tri-prod{padding:13px 14px}
   .prod-grid{gap:12px;margin-bottom:12px}
-  .prod-card{padding:13px 14px}
   .sim-layout{gap:12px}
   .sim-layout>*{min-width:0}
   .ec-card,.ec-box,.kpi-strip,.kvtable,.prod-card{min-width:0}
@@ -464,6 +551,7 @@ body.upload-open #uploadModal{opacity:1;visibility:visible}
   .mnav-list button{display:block;width:100%;text-align:left;border:0;background:none;font-family:inherit;font-size:14.5px;color:var(--ink);padding:13px 14px;border-radius:10px;font-weight:600;cursor:pointer;line-height:1.3}
   .mnav-list button.on{background:var(--bank-light);color:var(--bank)}
   .mnav-foot{padding:13px 18px;font-size:11px;color:var(--mut);border-top:1px solid var(--line);line-height:1.5;flex-shrink:0}
+  .mnav-fs{display:flex;align-items:center;justify-content:space-between;padding:12px 18px 4px;font-size:13px;color:var(--sub);font-weight:700;flex-shrink:0}
 }
 </style>
 </head>
@@ -483,6 +571,11 @@ body.upload-open #uploadModal{opacity:1;visibility:visible}
     <button data-view="doc" onclick="switchView('doc')">口径与边界</button>
   </nav>
   <div class="hdr-right">
+    <div class="fs-switch" id="fsSwitch" title="字号调节">
+      <button type="button" data-fs="1">A</button>
+      <button type="button" data-fs="2" class="on">A</button>
+      <button type="button" data-fs="3">A</button>
+    </div>
     <button class="hdr-user" id="hdrUser" title="信贷审查员（演示）">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4 0-8 2-8 6v2h16v-2c0-4-4-6-8-6Z"/></svg>
     </button>
@@ -509,6 +602,14 @@ body.upload-open #uploadModal{opacity:1;visibility:visible}
     <button data-view="dd" onclick="goMobile('dd')">尽调证据包</button>
     <button data-view="recheck" onclick="goMobile('recheck')">贷后年度复评</button>
     <button data-view="doc" onclick="goMobile('doc')">口径与边界</button>
+  </div>
+  <div class="mnav-fs">
+    <span>字号</span>
+    <div class="fs-switch" id="fsSwitchM">
+      <button type="button" data-fs="1">A</button>
+      <button type="button" data-fs="2" class="on">A</button>
+      <button type="button" data-fs="3">A</button>
+    </div>
   </div>
   <button class="mnav-foot upload-entry" onclick="closeMnav();openUpload()">
     <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M12 3 7 8h3v6h4V8h3L12 3ZM5 17v2h14v-2H5Z"/></svg>
@@ -567,6 +668,17 @@ body.upload-open #uploadModal{opacity:1;visibility:visible}
 <main>
 <!-- ========== 页面1：客群筛查总览 ========== -->
 <section class="view on" id="view-pool">
+  <div class="hero-strip">
+    <div class="hero-l">
+      <h2>化工企业漂绿识别与贷后监管平台</h2>
+      <p>G-Score 漂绿评分 · 银保联合定价 · 贷后年度复评 · 全流程证据留痕</p>
+    </div>
+    <div class="hero-badges">
+      <span>24 家冻结样本</span>
+      <span>152.5 万字真实报告</span>
+      <span>94.4% 页码定位率</span>
+    </div>
+  </div>
   <div class="stat-row" id="statRow"></div>
   <div class="ec-grid">
     <div class="ec-card">
@@ -8533,6 +8645,13 @@ function switchView(v){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
+/* 银保产品行「查看详情」展开/收起 */
+function toggleProd(btn){
+  const card=btn.closest(".prod-card");
+  const open=card.classList.toggle("open");
+  btn.textContent=open?"收起详情":"查看详情";
+}
+
 /* ================= 手机端：半屏导航抽屉 + 登录弹层（单一状态源） ================= */
 function closeMnav(){
   document.body.classList.remove("mnav-open");
@@ -8558,6 +8677,26 @@ function goMobile(v){ switchView(v); closeMnav(); }
     else{const t=document.createElement("div");t.className="toast show";t.textContent="演示环境已进入：信贷审查员视角";document.body.appendChild(t);setTimeout(()=>t.remove(),2200);}
   });
   document.addEventListener("keydown",e=>{ if(e.key==="Escape"){closeMnav();closeLogin();closeUpload();} });
+})();
+
+/* ================= 字号调节（三档，localStorage 记忆） ================= */
+(function(){
+  const FS_SCALE={"1":1,"2":1.12,"3":1.24};
+  function apply(lvl,syncOnly){
+    document.documentElement.style.zoom=FS_SCALE[lvl]||1.12;
+    document.querySelectorAll("#fsSwitch button,#fsSwitchM button").forEach(b=>{
+      b.classList.toggle("on",b.dataset.fs===lvl);
+    });
+    if(!syncOnly){try{localStorage.setItem("ejzs_fs",lvl);}catch(e){}}
+    // zoom 变化后让 ECharts 按新尺寸重绘
+    setTimeout(()=>{try{Object.values(window.EC||{}).forEach(c=>c.resize());}catch(e){}},120);
+  }
+  let saved="2";
+  try{saved=localStorage.getItem("ejzs_fs")||"2";}catch(e){}
+  apply(saved,true);
+  document.querySelectorAll("#fsSwitch button,#fsSwitchM button").forEach(b=>{
+    b.addEventListener("click",()=>apply(b.dataset.fs));
+  });
 })();
 
 /* ================= 上传企业数据弹窗（模拟入口） ================= */
@@ -9098,36 +9237,68 @@ function renderPricing(){
     <tr><td class="k">RAROC 风险调整后资本回报</td><td class="v" style="color:${rarColor}">${rar==null?"不适用（拒贷）":(rar*100).toFixed(2)+"%"}</td></tr>
     <tr><td class="k">贷后监测建议</td><td class="v" style="font-weight:600;font-size:12px;line-height:1.6">${escapeHtml(b.monitoring||"")}</td></tr>`;
 
-  /* 环责险卡 */
+  /* 环责险卡（横版产品行） */
   const loadTags=(env.env_load_detail||[]).map(t=>`<span>${escapeHtml(t)}</span>`).join("");
   document.getElementById("envCard").innerHTML=`
-    <h3>${ic('shield')} 环境污染责任保险 <span class="pbadge" style="background:${envColor}">${escapeHtml(envDec)}</span></h3>
-    <table class="kvtable">
-      <tr><td class="k">累计责任限额</td><td class="v">2,000 万元</td></tr>
-      <tr><td class="k">子板块基准费率（${escapeHtml(c.sub_sector||"化工")}）</td><td class="v">${(num(env.base_rate)*100).toFixed(1)}‰</td></tr>
-      <tr><td class="k">基本保费 = 限额 × 基准费率</td><td class="v">${fmt(num(env.base_premium_wan),1)} 万</td></tr>
-      <tr><td class="k">G 浮动系数（1 + G×1%，封顶 2）</td><td class="v">×${num(env.g_coeff).toFixed(2)}</td></tr>
-      <tr><td class="k">风险查勘加费合计</td><td class="v">+${fmt(num(env.env_load_pct),1)}%</td></tr>
-      <tr><td class="k">应收年保费</td><td class="v" style="color:${envColor};font-size:15px">${fmt(num(env.premium_wan),2)} 万元</td></tr>
-      <tr><td class="k">费率水平 / 每次事故免赔额</td><td class="v">${escapeHtml(env.rate_pct||"—")} · ${fmt(num(env.deductible_wan),0)} 万</td></tr>
-    </table>
-    <div class="load-tags">${loadTags||"<span>查勘明细待补</span>"}</div>
-    <div class="next-hint">${ic('trend')} ${escapeHtml(env.next_year_hint||"")}</div>`;
+  <div class="prod-row">
+    <div class="prod-ribbon">${ic('shield')}<span>环责险</span></div>
+    <div class="prod-main">
+      <div class="prod-top">
+        <div class="prod-name">环境污染责任保险 <span class="pbadge" style="background:${envColor}">${escapeHtml(envDec)}</span></div>
+        <div class="prod-metrics">
+          <div class="pm"><b>2,000 万</b><span>累计责任限额</span></div>
+          <div class="pm"><b>${fmt(num(env.premium_wan),2)} 万</b><span>应收年保费</span></div>
+          <div class="pm"><b>${(num(env.base_rate)*100).toFixed(1)}‰</b><span>子板块基准费率</span></div>
+          <div class="pm"><b>${fmt(num(env.deductible_wan),0)} 万</b><span>每次事故免赔额</span></div>
+        </div>
+        <button type="button" class="prod-detail-btn" onclick="toggleProd(this)">查看详情</button>
+      </div>
+      <div class="prod-detail"><div class="prod-inner">
+        <table class="kvtable">
+          <tr><td class="k">累计责任限额</td><td class="v">2,000 万元</td></tr>
+          <tr><td class="k">子板块基准费率（${escapeHtml(c.sub_sector||"化工")}）</td><td class="v">${(num(env.base_rate)*100).toFixed(1)}‰</td></tr>
+          <tr><td class="k">基本保费 = 限额 × 基准费率</td><td class="v">${fmt(num(env.base_premium_wan),1)} 万</td></tr>
+          <tr><td class="k">G 浮动系数（1 + G×1%，封顶 2）</td><td class="v">×${num(env.g_coeff).toFixed(2)}</td></tr>
+          <tr><td class="k">风险查勘加费合计</td><td class="v">+${fmt(num(env.env_load_pct),1)}%</td></tr>
+          <tr><td class="k">应收年保费</td><td class="v" style="color:${envColor};font-size:15px">${fmt(num(env.premium_wan),2)} 万元</td></tr>
+          <tr><td class="k">费率水平 / 每次事故免赔额</td><td class="v">${escapeHtml(env.rate_pct||"—")} · ${fmt(num(env.deductible_wan),0)} 万</td></tr>
+        </table>
+        <div class="load-tags">${loadTags||"<span>查勘明细待补</span>"}</div>
+        <div class="next-hint">${ic('trend')} ${escapeHtml(env.next_year_hint||"")}</div>
+      </div></div>
+    </div>
+  </div>`;
 
-  /* 保证险卡 */
+  /* 保证险卡（横版产品行） */
   document.getElementById("guarCard").innerHTML=`
-    <h3>${ic('doc')} 绿色信贷保证保险（融资增信） <span class="pbadge" style="background:${guColor}">${escapeHtml(guDec)}</span></h3>
-    <table class="kvtable">
-      <tr><td class="k">贷款本息（本金 ×(1+利率×3年)）</td><td class="v">${fmt(num(gu.debt_total_wan),1)} 万</td></tr>
-      <tr><td class="k">承保成数（正常80%/预警60%/高风险0）</td><td class="v">${(num(gu.insured_ratio)*100).toFixed(0)}%</td></tr>
-      <tr><td class="k">保险金额（风险保障）</td><td class="v">${fmt(num(gu.insured_amount_wan),1)} 万</td></tr>
-      <tr><td class="k">保证险年费率 = 0.8% + G×0.02%（封顶3%）</td><td class="v">${(num(gu.annual_rate_premium)*100).toFixed(2)}%</td></tr>
-      <tr><td class="k">3 年保证险保费合计</td><td class="v" style="color:${guColor};font-size:15px">${fmt(num(gu.premium_wan),2)} 万元</td></tr>
-      <tr><td class="k">风险分担（银行自担 / 保险赔付）</td><td class="v">${(num(gu.bank_self_share)*100).toFixed(0)}% / ${(num(gu.insurer_share)*100).toFixed(0)}%</td></tr>
-    </table>
-    <div class="next-hint" style="background:#F2F6FC;border-color:#CFE0F5;color:#1B4FA0">
-      ${ic('bulb')} ${guDec.indexOf("不予")>=0?"高风险客户不予承保，企业完成整改、复评 G&lt;30 后可恢复 80% 成数增信。":"保证险将 "+fmt(num(gu.insured_amount_wan),0)+" 万元信用风险转移至保险机构，释放银行资本与授信集中度。"}
-    </div>`;
+  <div class="prod-row">
+    <div class="prod-ribbon">${ic('doc')}<span>保证险</span></div>
+    <div class="prod-main">
+      <div class="prod-top">
+        <div class="prod-name">绿色信贷保证保险 <span class="pbadge" style="background:${guColor}">${escapeHtml(guDec)}</span></div>
+        <div class="prod-metrics">
+          <div class="pm"><b>${fmt(num(gu.insured_amount_wan),1)} 万</b><span>保险金额（风险保障）</span></div>
+          <div class="pm"><b>${(num(gu.insured_ratio)*100).toFixed(0)}%</b><span>承保成数</span></div>
+          <div class="pm"><b>${(num(gu.annual_rate_premium)*100).toFixed(2)}%</b><span>保证险年费率</span></div>
+          <div class="pm"><b>${fmt(num(gu.premium_wan),2)} 万</b><span>3 年保费合计</span></div>
+        </div>
+        <button type="button" class="prod-detail-btn" onclick="toggleProd(this)">查看详情</button>
+      </div>
+      <div class="prod-detail"><div class="prod-inner">
+        <table class="kvtable">
+          <tr><td class="k">贷款本息（本金 ×(1+利率×3年)）</td><td class="v">${fmt(num(gu.debt_total_wan),1)} 万</td></tr>
+          <tr><td class="k">承保成数（正常80%/预警60%/高风险0）</td><td class="v">${(num(gu.insured_ratio)*100).toFixed(0)}%</td></tr>
+          <tr><td class="k">保险金额（风险保障）</td><td class="v">${fmt(num(gu.insured_amount_wan),1)} 万</td></tr>
+          <tr><td class="k">保证险年费率 = 0.8% + G×0.02%（封顶3%）</td><td class="v">${(num(gu.annual_rate_premium)*100).toFixed(2)}%</td></tr>
+          <tr><td class="k">3 年保证险保费合计</td><td class="v" style="color:${guColor};font-size:15px">${fmt(num(gu.premium_wan),2)} 万元</td></tr>
+          <tr><td class="k">风险分担（银行自担 / 保险赔付）</td><td class="v">${(num(gu.bank_self_share)*100).toFixed(0)}% / ${(num(gu.insurer_share)*100).toFixed(0)}%</td></tr>
+        </table>
+        <div class="next-hint" style="background:#F2F6FC;border-color:#CFE0F5;color:#1B4FA0">
+          ${ic('bulb')} ${guDec.indexOf("不予")>=0?"高风险客户不予承保，企业完成整改、复评 G&lt;30 后可恢复 80% 成数增信。":"保证险将 "+fmt(num(gu.insured_amount_wan),0)+" 万元信用风险转移至保险机构，释放银行资本与授信集中度。"}
+        </div>
+      </div></div>
+    </div>
+  </div>`;
 
   /* 综合年成本 */
   const interest=num(b.annual_interest_wan)||0, envPrem=num(env.premium_wan)||0, guPrem=num(gu.premium_wan)||0;
